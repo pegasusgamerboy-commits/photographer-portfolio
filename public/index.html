@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photographer Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
+    <style>
+        :root {
+            /* Dark Theme */
+            --color-bg: #121212; /* Deeper dark background */
+            --color-text: #E0E0E0;
+            --color-text-secondary: #A0A0A0; /* For descriptions, smaller text */
+            --color-primary: #3D8B40; /* Deeper, slightly muted green */
+            --color-primary-dark: #2E7D32; /* Even deeper for hover */
+            --color-primary-light: #66BB6A; /* Brighter green for accents/highlights */
+            --color-accent: #81C784; /* Even brighter, for focus/interactive elements */
+            --color-border: #333333;
+            --color-card-bg: #1E1E1E; /* Slightly lighter than bg, but still dark */
+            --color-input-bg: #282828;
+            --color-input-text: #E0E0E0;
+            --color-error: #EF5350;
+            --color-success: #66BB6A;
+            --color-shadow: rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                /* Light Theme */
+                --color-bg: #F0F0F0;
+                --color-text: #333333;
+                --color-text-secondary: #666666;
+                --color-primary: #3D8B40;
+                --color-primary-dark: #2E7D32;
+                --color-primary-light: #66BB6A;
+                --color-accent: #81C784;
+                --color-border: #CCCCCC;
+                --color-card-bg: #FFFFFF;
+                --color-input-bg: #F8F8F8;
+                --color-input-text: #333333;
+                --color-error: #D32F2F;
+                --color-success: #4CAF50;
+                --color-shadow: rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 16px; /* Base font size */
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px; /* Increased padding */
+            width: 100%;
+        }
+
+        header {
+            background-color: var(--color-card-bg);
+            padding: 24px 16px; /* Increased padding */
+            border-bottom: 2px solid var(--color-border); /* More prominent border */
+            box-shadow: 0 2px 4px var(--color-shadow);
+            margin-bottom: 32px; /* Increased margin */
+        }
+
+        header h1 {
+            font-size: 40px; /* Larger title */
+            color: var(--color-primary-light); /* Use a brighter green for the title */
+            text-align: center;
+            margin-bottom: 12px; /* Adjusted margin */
+            letter-spacing: -0.02em; /* Subtle letter spacing */
+            font-weight: 700; /* Bolder */
+            text-shadow: 0 2px 4px var(--color-shadow); /* Subtle text shadow */
+        }
+
+        header nav {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        header nav button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px; /* Slightly larger buttons */
+            border-radius: 6px; /* Slightly more rounded */
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+        }
+
+        header nav button:hover:not(:disabled) {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px); /* More pronounced lift */
+            box-shadow: 0 4px 8px var(--color-shadow); /* Shadow on hover */
+        }
+
+        header nav button:focus-visible {
+            outline: 3px solid var(--color-accent); /* Thicker outline */
+            outline-offset: 3px;
+        }
+
+        header nav button:disabled {
+            background-color: var(--color-primary-light);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        main {
+            flex-grow: 1;
+            padding-bottom: 32px; /* Increased padding */
+        }
+
+        section {
+            background-color: var(--color-card-bg);
+            padding: 32px; /* Increased padding */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 4px 12px var(--color-shadow); /* More pronounced shadow */
+            margin-bottom: 32px; /* Increased margin */
+        }
+
+        h2 {
+            font-size: 28px; /* Larger section titles */
+            color: var(--color-primary-light);
+            margin-bottom: 24px; /* Increased margin */
+            text-align: center;
+            letter-spacing: -0.01em;
+            font-weight: 600;
+        }
+
+        h3 { /* For modal titles and photo card titles */
+            font-size: 24px;
+            color: var(--color-primary-light);
+            margin-bottom: 16px;
+            text-align: center;
+            letter-spacing: -0.01em;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 15px; /* Adjusted font size */
+            color: var(--color-text);
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 14px; /* Slightly larger inputs */
+            border: 1px solid var(--color-border);
+            border-radius: 6px; /* More rounded */
+            background-color: var(--color-input-bg);
+            color: var(--color-input-text);
+            font-size: 16px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="email"]:focus-visible,
+        input[type="password"]:focus-visible,
+        input[type="text"]:focus-visible,
+        textarea:focus-visible {
+            border-color: var(--color-accent);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-accent); /* Thicker focus ring */
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 8px 0;
+            font-size: 16px;
+            color: var(--color-input-text);
+        }
+
+        input[type="file"]::file-selector-button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px; /* Adjusted padding */
+            border-radius: 6px; /* Adjusted border-radius */
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.2s ease;
+            margin-right: 16px;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background-color: var(--color-primary-dark);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 14px 28px; /* Larger buttons */
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            flex-grow: 1;
+            max-width: 220px; /* Slightly wider max-width */
+        }
+
+        .button:hover:not(:disabled) {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--color-shadow);
+        }
+
+        .button:focus-visible {
+            outline: 3px solid var(--color-accent);
+            outline-offset: 3px;
+        }
+
+        .button:disabled {
+            background-color: var(--color-primary-light);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .button.secondary {
+            background-color: var(--color-input-bg);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .button.secondary:hover:not(:disabled) {
+            background-color: var(--color-border);
+            color: var(--color-text);
+        }
+
+        .message {
+            padding: 14px; /* Adjusted padding */
+            border-radius: 6px; /* Adjusted border-radius */
+            margin-top: 16px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px; /* Adjusted font size */
+        }
+
+        .message.error {
+            background-color: rgba(239, 83, 80, 0.2);
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+        }
+
+        .message.success {
+            background-color: rgba(102, 187, 106, 0.2);
+            color: var(--color-success);
+            border: 1px solid var(--color-success);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 32px; /* Increased gap */
+            margin-top: 24px;
+        }
+
+        .photo-card {
+            background-color: var(--color-input-bg);
+            border-radius: 12px; /* More rounded */
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--color-shadow); /* More pronounced shadow */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid var(--color-border); /* Subtle border */
+        }
+
+        .photo-card:hover {
+            transform: translateY(-6px); /* More pronounced lift */
+            box-shadow: 0 8px 16px var(--color-shadow); /* Stronger shadow on hover */
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 220px; /* Slightly taller images */
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .photo-card-content {
+            padding: 20px; /* Increased padding */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .photo-card h3 {
+            font-size: 20px; /* Adjusted to new scale */
+            margin-bottom: 10px;
+            color: var(--color-primary-light);
+            word-break: break-word;
+            text-align: left; /* Override center alignment from general h3 */
+        }
+
+        .photo-card p {
+            font-size: 15px; /* Adjusted font size */
+            color: var(--color-text-secondary); /* Use secondary text color */
+            margin-bottom: 20px; /* Increased margin */
+            flex-grow: 1;
+            word-break: break-word;
+        }
+
+        .photo-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .photo-card-actions button {
+            flex-grow: 1;
+            padding: 10px 14px; /* Adjusted padding */
+            font-size: 15px; /* Adjusted font size */
+            border-radius: 6px; /* Adjusted border-radius */
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .photo-card-actions .edit-button {
+            background-color: var(--color-primary-light); /* Use primary-light for edit */
+            color: white;
+            border: none;
+        }
+
+        .photo-card-actions .edit-button:hover:not(:disabled) {
+            background-color: var(--color-primary); /* Darker on hover */
+        }
+
+        .photo-card-actions .delete-button {
+            background-color: var(--color-error);
+            color: white;
+            border: none;
+        }
+
+        .photo-card-actions .delete-button:hover:not(:disabled) {
+            background-color: #c62828; /* A slightly darker red */
+        }
+
+        .photo-card-actions button:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+        }
+
+        .photo-card-actions button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 64px 24px; /* More generous padding */
+            color: var(--color-text-secondary); /* Use secondary text color */
+            font-size: 20px; /* Larger font size */
+            background-color: var(--color-input-bg);
+            border-radius: 12px; /* More rounded */
+            margin-top: 24px;
+            box-shadow: 0 2px 8px var(--color-shadow);
+        }
+
+        .empty-state p {
+            margin-bottom: 16px;
+        }
+
+        .loading-spinner {
+            border: 5px solid var(--color-border); /* Thicker spinner */
+            border-top: 5px solid var(--color-primary-light); /* Use accent color */
+            border-radius: 50%;
+            width: 50px; /* Larger spinner */
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 24px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Darker overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--color-card-bg);
+            padding: 32px; /* Increased padding */
+            border-radius: 12px; /* More rounded */
+            box-shadow: 0 8px 24px var(--color-shadow); /* More pronounced shadow */
+            width: 90%;
+            max-width: 550px; /* Slightly wider modal */
+            position: relative;
+            transform: translateY(-30px); /* More pronounced initial offset */
+            transition: transform 0.3s ease;
+            border: 1px solid var(--color-border);
+        }
+
+        .modal.open .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 28px; /* Larger close button */
+            color: var(--color-text-secondary); /* Muted color */
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close-button:hover {
+            color: var(--color-primary-light); /* Brighter on hover */
+        }
+
+        .modal-close-button:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .modal h3 {
+            font-size: 28px; /* Larger modal title */
+            color: var(--color-primary-light);
+            margin-bottom: 32px; /* Increased margin */
+            text-align: center;
+        }
+
+        /* User Info Section */
+        #user-info {
+            padding: 20px; /* Adjusted padding */
+            background-color: var(--color-card-bg);
+            border-radius: 10px; /* Slightly rounded */
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px var(--color-shadow);
+            border: 1px solid var(--color-border);
+        }
+        #user-info p {
+            font-size: 18px; /* Larger font size */
+            margin-bottom: 12px;
+            color: var(--color-text);
+        }
+        #user-info strong {
+            color: var(--color-primary-light); /* Highlight email */
+            font-weight: 600;
+        }
+        #user-info .button {
+            max-width: 150px; /* Smaller logout button */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 32px; /* Adjust for smaller screens */
+            }
+            h2 {
+                font-size: 24px;
+            }
+            h3 {
+                font-size: 20px;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            .button {
+                max-width: 100%;
+            }
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 16px;
+            }
+            section {
+                padding: 24px;
+            }
+            .modal-content {
+                padding: 24px;
+            }
+            .modal h3 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📸 Photographer Portfolio</h1>
+            <nav id="auth-nav">
+                <!-- Auth buttons/info will be rendered here by JS -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="auth-section">
+            <h2>Welcome!</h2>
+            <div id="auth-forms">
+                <div id="login-form-container">
+                    <h3>Log In</h3>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" required autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password:</label>
+                            <input type="password" id="login-password" required autocomplete="current-password">
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="button">Log In</button>
+                            <button type="button" class="button secondary" id="show-signup-button">Sign Up</button>
+                        </div>
+                        <div id="login-message" class="message error" style="display: none;"></div>
+                    </form>
+                </div>
+
+                <div id="signup-form-container" style="display: none;">
+                    <h3>Sign Up</h3>
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <label for="signup-email">Email:</label>
+                            <input type="email" id="signup-email" required autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-password">Password:</label>
+                            <input type="password" id="signup-password" required autocomplete="new-password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="button">Sign Up</button>
+                            <button type="button" class="button secondary" id="show-login-button">Back to Log In</button>
+                        </div>
+                        <div id="signup-message" class="message error" style="display: none;"></div>
+                    </form>
+                </div>
+
+                <div id="confirm-form-container" style="display: none;">
+                    <h3>Confirm Your Account</h3>
+                    <p>A confirmation code has been sent to your email. Please enter it below.</p>
+                    <form id="confirm-form">
+                        <div class="form-group">
+                            <label for="confirm-email">Email:</label>
+                            <input type="email" id="confirm-email" required autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmation-code">Confirmation Code:</label>
+                            <input type="text" id="confirmation-code" required>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="button">Confirm</button>
+                        </div>
+                        <div id="confirm-message" class="message error" style="display: none;"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="app-content" style="display: none;">
+            <div id="user-info" style="text-align: center; margin-bottom: 24px;">
+                <p>Logged in as: <strong id="user-email"></strong></p>
+                <button id="logout-button" class="button secondary" style="margin-top: 16px;">Log Out</button>
+            </div>
+
+            <section id="upload-section">
+                <h2>Upload New Photo</h2>
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label for="photo-file">Image File:</label>
+                        <input type="file" id="photo-file" accept="image/png, image/jpeg, image/gif, image/webp" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="photo-title">Title:</label>
+                        <input type="text" id="photo-title" placeholder="e.g., Sunset over the Mountains" maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="photo-description">Description:</label>
+                        <textarea id="photo-description" rows="4" placeholder="A brief description of your photo..." maxlength="500"></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="button" id="upload-button">Upload Photo</button>
+                    </div>
+                    <div id="upload-status" class="message" style="display: none;"></div>
+                </form>
+            </section>
+
+            <section id="portfolio-section">
+                <h2>Your Portfolio</h2>
+                <div id="photos-loading" class="loading-spinner" style="display: none;"></div>
+                <div id="photos-empty" class="empty-state" style="display: none;">
+                    <p>No photos uploaded yet. Start by uploading your first masterpiece!</p>
+                </div>
+                <div id="photos-error" class="message error" style="display: none;"></div>
+                <div id="photo-grid" class="photo-grid">
+                    <!-- Photos will be rendered here -->
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" aria-label="Close modal">&times;</button>
+            <h3>Edit Photo Details</h3>
+            <form id="edit-form">
+                <input type="hidden" id="edit-photo-id">
+                <div class="form-group">
+                    <label for="edit-title">Title:</label>
+                    <input type="text" id="edit-title" required maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">Description:</label>
+                    <textarea id="edit-description" rows="4" maxlength="500"></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="button">Save Changes</button>
+                    <button type="button" class="button secondary" id="cancel-edit-button">Cancel</button>
+                </div>
+                <div id="edit-message" class="message error" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const authSection = document.getElementById('auth-section');
+        const appContent = document.getElementById('app-content');
+        const authNav = document.getElementById('auth-nav');
+        const userInfo = document.getElementById('user-info');
+        const userEmailSpan = document.getElementById('user-email');
+        const logoutButton = document.getElementById('logout-button');
+
+        // Auth forms
+        const loginFormContainer = document.getElementById('login-form-container');
+        const signupFormContainer = document.getElementById('signup-form-container');
+        const confirmFormContainer = document.getElementById('confirm-form-container');
+
+        const loginForm = document.getElementById('login-form');
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginMessage = document.getElementById('login-message');
+        const showSignupButton = document.getElementById('show-signup-button');
+
+        const signupForm = document.getElementById('signup-form');
+        const signupEmailInput = document.getElementById('signup-email');
+        const signupPasswordInput = document.getElementById('signup-password');
+        const signupMessage = document.getElementById('signup-message');
+        const showLoginButton = document.getElementById('show-login-button');
+
+        const confirmForm = document.getElementById('confirm-form');
+        const confirmEmailInput = document.getElementById('confirm-email');
+        const confirmationCodeInput = document.getElementById('confirmation-code');
+        const confirmMessage = document.getElementById('confirm-message');
+
+        // App content
+        const uploadForm = document.getElementById('upload-form');
+        const photoFileInput = document.getElementById('photo-file');
+        const photoTitleInput = document.getElementById('photo-title');
+        const photoDescriptionInput = document.getElementById('photo-description');
+        const uploadButton = document.getElementById('upload-button');
+        const uploadStatus = document.getElementById('upload-status');
+
+        const photosLoading = document.getElementById('photos-loading');
+        const photosEmpty = document.getElementById('photos-empty');
+        const photosError = document.getElementById('photos-error');
+        const photoGrid = document.getElementById('photo-grid');
+
+        // Edit modal
+        const editModal = document.getElementById('edit-modal');
+        const editForm = document.getElementById('edit-form');
+        const editPhotoIdInput = document.getElementById('edit-photo-id');
+        const editTitleInput = document.getElementById('edit-title');
+        const editDescriptionInput = document.getElementById('edit-description');
+        const editMessage = document.getElementById('edit-message');
+        const modalCloseButton = editModal.querySelector('.modal-close-button');
+        const cancelEditButton = document.getElementById('cancel-edit-button');
+
+        let currentPhotos = [];
+
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = 'message ' + type;
+            element.style.display = 'block';
+        }
+
+        function hideMessage(element) {
+            element.style.display = 'none';
+            element.textContent = '';
+        }
+
+        async function checkAuth() {
+            try {
+                const response = await fetch('/auth/me');
+                if (response.ok) {
+                    const data = await response.json();
+                    userEmailSpan.textContent = data.email;
+                    showAppContent();
+                    await fetchPhotos();
+                } else {
+                    showAuthForms();
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                showAuthForms();
+            }
+        }
+
+        function showAppContent() {
+            authSection.style.display = 'none';
+            appContent.style.display = 'block';
+        }
+
+        function showAuthForms() {
+            appContent.style.display = 'none';
+            authSection.style.display = 'block';
+            loginFormContainer.style.display = 'block';
+            signupFormContainer.style.display = 'none';
+            confirmFormContainer.style.display = 'none';
+            hideMessage(loginMessage);
+            hideMessage(signupMessage);
+            hideMessage(confirmMessage);
+        }
+
+        function showSignupForm() {
+            loginFormContainer.style.display = 'none';
+            signupFormContainer.style.display = 'block';
+            confirmFormContainer.style.display = 'none';
+            hideMessage(loginMessage);
+            hideMessage(signupMessage);
+            hideMessage(confirmMessage);
+        }
+
+        function showConfirmForm(email) {
+            loginFormContainer.style.display = 'none';
+            signupFormContainer.style.display = 'none';
+            confirmFormContainer.style.display = 'block';
+            confirmEmailInput.value = email;
+            hideMessage(loginMessage);
+            hideMessage(signupMessage);
+            hideMessage(confirmMessage);
+        }
+
+        showSignupButton.addEventListener('click', showSignupForm);
+        showLoginButton.addEventListener('click', showAuthForms);
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage(loginMessage);
+            const email = loginEmailInput.value;
+            const password = loginPasswordInput.value;
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    await checkAuth(); // Re-check auth to update UI and fetch photos
+                } else {
+                    if (data.code === 'NOT_CONFIRMED') {
+                        showConfirmForm(email);
+                        showMessage(confirmMessage, data.message, 'error');
+                    } else {
+                        showMessage(loginMessage, data.message, 'error');
+                    }
+                }
+            } catch (error) {
+                showMessage(loginMessage, 'An unexpected error occurred.', 'error');
+                console.error('Login error:', error);
+            }
+        });
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage(signupMessage);
+            const email = signupEmailInput.value;
+            const password = signupPasswordInput.value;
+            try {
+                const response = await fetch('/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showConfirmForm(email);
+                    showMessage(confirmMessage, data.message, 'success');
+                } else {
+                    showMessage(signupMessage, data.message, 'error');
+                }
+            } catch (error) {
+                showMessage(signupMessage, 'An unexpected error occurred.', 'error');
+                console.error('Signup error:', error);
+            }
+        });
+
+        confirmForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage(confirmMessage);
+            const email = confirmEmailInput.value;
+            const code = confirmationCodeInput.value;
+            try {
+                const response = await fetch('/auth/confirm', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showAuthForms(); // Go back to login
+                    showMessage(loginMessage, data.message + ' You can now log in.', 'success');
+                } else {
+                    showMessage(confirmMessage, data.message, 'error');
+                }
+            } catch (error) {
+                showMessage(confirmMessage, 'An unexpected error occurred.', 'error');
+                console.error('Confirm error:', error);
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await fetch('/auth/logout', { method: 'POST' });
+                showAuthForms();
+                currentPhotos = [];
+                renderPhotos();
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage(uploadStatus);
+            uploadButton.disabled = true;
+
+            const file = photoFileInput.files[0];
+            if (!file) {
+                showMessage(uploadStatus, 'Please select a file to upload.', 'error');
+                uploadButton.disabled = false;
+                return;
+            }
+
+            const title = photoTitleInput.value.trim();
+            const description = photoDescriptionInput.value.trim();
+
+            try {
+                // Step 1: Upload file to S3
+                showMessage(uploadStatus, 'Uploading file...', 'success');
+                const uploadResponse = await fetch('/upload?name=' + encodeURIComponent(file.name), {
+                    method: 'POST',
+                    headers: { 'Content-Type': file.type || 'application/octet-stream' },
+                    body: file
+                });
+
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json();
+                    throw new Error(errorData.message || 'File upload failed.');
+                }
+                const uploadResult = await uploadResponse.json();
+
+                // Step 2: Save photo metadata to DynamoDB
+                showMessage(uploadStatus, 'Saving photo details...', 'success');
+                const photoResponse = await fetch('/photos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        s3Key: uploadResult.s3Key,
+                        name: uploadResult.name,
+                        size: uploadResult.size,
+                        contentType: uploadResult.contentType,
+                        createdAt: uploadResult.createdAt,
+                        title: title,
+                        description: description
+                    })
+                });
+
+                if (!photoResponse.ok) {
+                    const errorData = await photoResponse.json();
+                    throw new Error(errorData.message || 'Failed to save photo details.');
+                }
+                const newPhoto = await photoResponse.json();
+
+                showMessage(uploadStatus, 'Photo uploaded and saved successfully!', 'success');
+                uploadForm.reset();
+                currentPhotos.unshift(newPhoto); // Add new photo to the beginning
+                renderPhotos();
+
+            } catch (error) {
+                showMessage(uploadStatus, 'Upload failed: ' + error.message, 'error');
+                console.error('Upload process error:', error);
+            } finally {
+                uploadButton.disabled = false;
+            }
+        });
+
+        async function fetchPhotos() {
+            photosLoading.style.display = 'block';
+            photosEmpty.style.display = 'none';
+            hideMessage(photosError);
+            photoGrid.innerHTML = '';
+
+            try {
+                const response = await fetch('/photos');
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to fetch photos.');
+                }
+                currentPhotos = await response.json();
+                renderPhotos();
+            } catch (error) {
+                showMessage(photosError, 'Failed to load photos: ' + error.message, 'error');
+                console.error('Fetch photos error:', error);
+            } finally {
+                photosLoading.style.display = 'none';
+            }
+        }
+
+        function renderPhotos() {
+            photoGrid.innerHTML = '';
+            if (currentPhotos.length === 0) {
+                photosEmpty.style.display = 'block';
+                return;
+            }
+            photosEmpty.style.display = 'none';
+
+            currentPhotos.forEach(photo => {
+                const photoCard = document.createElement('div');
+                photoCard.className = 'photo-card';
+                photoCard.setAttribute('data-id', photo.photoId);
+
+                const imageUrl = '/download?key=' + encodeURIComponent(photo.s3Key);
+
+                photoCard.innerHTML = `
+                    <img src="${imageUrl}" alt="${escapeHTML(photo.title || photo.name)}">
+                    <div class="photo-card-content">
+                        <h3>${escapeHTML(photo.title || 'Untitled')}</h3>
+                        <p>${escapeHTML(photo.description || 'No description.')}</p>
+                        <div class="photo-card-actions">
+                            <button class="edit-button">Edit</button>
+                            <button class="delete-button">Delete</button>
+                        </div>
+                    </div>
+                `;
+
+                photoCard.querySelector('.edit-button').addEventListener('click', () => openEditModal(photo));
+                photoCard.querySelector('.delete-button').addEventListener('click', () => deletePhoto(photo.photoId));
+
+                photoGrid.appendChild(photoCard);
+            });
+        }
+
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+
+        async function deletePhoto(photoId) {
+            if (!confirm('Are you sure you want to delete this photo? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/photos/' + encodeURIComponent(photoId), {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete photo.');
+                }
+
+                currentPhotos = currentPhotos.filter(p => p.photoId !== photoId);
+                renderPhotos();
+                showMessage(uploadStatus, 'Photo deleted successfully!', 'success'); // Using uploadStatus for general messages
+            } catch (error) {
+                showMessage(uploadStatus, 'Failed to delete photo: ' + error.message, 'error');
+                console.error('Delete photo error:', error);
+            }
+        }
+
+        function openEditModal(photo) {
+            editPhotoIdInput.value = photo.photoId;
+            editTitleInput.value = photo.title || '';
+            editDescriptionInput.value = photo.description || '';
+            hideMessage(editMessage);
+            editModal.classList.add('open');
+            editTitleInput.focus();
+        }
+
+        function closeEditModal() {
+            editModal.classList.remove('open');
+        }
+
+        modalCloseButton.addEventListener('click', closeEditModal);
+        cancelEditButton.addEventListener('click', closeEditModal);
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage(editMessage);
+
+            const photoId = editPhotoIdInput.value;
+            const title = editTitleInput.value.trim();
+            const description = editDescriptionInput.value.trim();
+
+            try {
+                const response = await fetch('/photos/' + encodeURIComponent(photoId), {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to update photo.');
+                }
+
+                const updatedPhoto = await response.json();
+                const index = currentPhotos.findIndex(p => p.photoId === photoId);
+                if (index !== -1) {
+                    currentPhotos[index] = updatedPhoto;
+                }
+                renderPhotos();
+                closeEditModal();
+                showMessage(uploadStatus, 'Photo updated successfully!', 'success');
+            } catch (error) {
+                showMessage(editMessage, 'Failed to update photo: ' + error.message, 'error');
+                console.error('Update photo error:', error);
+            }
+        });
+
+        // Initial check on page load
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>

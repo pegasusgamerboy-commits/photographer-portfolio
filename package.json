@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.583.0",
+    "@aws-sdk/client-dynamodb": "^3.583.0",
+    "@aws-sdk/client-s3": "^3.583.0",
+    "@aws-sdk/lib-dynamodb": "^3.583.0",
+    "express": "^4.19.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
